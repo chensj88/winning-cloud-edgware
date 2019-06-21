@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>winning-cloud</artifactId>
+        <groupId>com.winning.devops</groupId>
+        <version>${winning.cloud.version}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>netflix-cloud-module</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        netflix cloud component
+        eureka  server
+                ribbon
+                openfeign
+                zuul
+                hystrix
+                turbine
+    </description>
+    <modules>
+        <module>netflix-eureka-server</module>
+        <module>netflix-ribbon-client</module>
+        <module>netflix-open-feign</module>
+        <module>netflix-zuul-gateway</module>
+    </modules>
+</project>

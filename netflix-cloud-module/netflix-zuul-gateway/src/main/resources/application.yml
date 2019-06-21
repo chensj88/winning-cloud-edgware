@@ -1,0 +1,80 @@
+server:
+  port: 80
+spring:
+  application:
+    name: netflix-zuul-gateway
+  boot:
+    admin:
+      url: http://localhost:9000
+  zipkin:
+    base-url: http://localhost:9411
+  # 数据采集率
+  sleuth:
+    sampler:
+      percentage: 1
+eureka:
+  instance:
+    hostname: 127.0.0.1
+    prefer-ip-address: true
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    #添加eureka.instance.metadata-map.user.name和eureka.instance.metadata-map.user.name 否则在安全模式下无法注册
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    healthcheck:
+      enabled: true
+management:
+  security:
+    enabled: false
+endpoints:
+  enabled: true
+  shutdown:
+    enabled: false
+info:
+  app:
+    encoding: UTF-8
+    java:
+      source: 1.8
+      target: 1.8
+    head: ${spring.application.name}
+    body: Welcome, this is ${spring.application.name} @ ${server.port}
+zuul:
+  routes:
+    api:
+      path: /api/**
+      serviceId: netflix-eureka-client
+    rapi:
+      path: /rapi/**
+      serviceId: netflix-ribbon-client
+    fapi:
+      path: /fapi/**
+      serviceId: netflix-open-feign
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 10000
+    max-total-connections: 2000
+    max-per-route-connections: 20
+hystrix:
+  command:
+    # 默认熔断器处理请求
+    default:
+      excution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeout-in-milliseconds: 60000
+    # 特定的熔断器
+    rapi:
+      excution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeout-in-milliseconds: 70000
